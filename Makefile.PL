@@ -2,6 +2,7 @@ use 5.006;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
+use Module::Metadata;
 
 WriteMakefile(
 	NAME             => 'Bijection',
@@ -13,6 +14,7 @@ WriteMakefile(
 	MIN_PERL_VERSION => '5.006',
 	CONFIGURE_REQUIRES => {
 		'ExtUtils::MakeMaker' => '0',
+		'Module::Metadata' => '0',
 	},
 	BUILD_REQUIRES => {
 		'Test::More' => '0',
