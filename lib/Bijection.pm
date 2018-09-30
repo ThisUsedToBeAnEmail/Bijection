@@ -18,14 +18,21 @@ BEGIN {
 
 sub biject {
 	my ($id, $out) = @_;
-	croak "id to encode must be an integer and non-negative" unless (($id =~ m/^\d+$/ || $id > 0) and $id += $OFFSET);
-	do { $out .= $ALPHA[($id % $COUNT)]; 1} and $id = int($id/$COUNT) while ($id > 0);
-	reverse ($out || $ALPHA[0]);
+	croak "id to encode must be an integer and non-negative: $id" unless ($id =~ m/^\d+$/);
+	$id += $OFFSET;
+	while ($id > 0) {
+		$out .= $ALPHA[($id % $COUNT)]; 
+		$id = int($id/$COUNT);
+	}
+	reverse $out;
 }
 
 sub inverse {
 	my ($out, $id) = (@_, 0);
-	defined $INDEX{$_} && do { $id = $id * $COUNT + $INDEX{$_}; 1; } or croak "invalid character $_ in $out" for (split //, $out);
+	$id = defined $INDEX{$_} 
+		? $id * $COUNT + $INDEX{$_} 
+		: croak "invalid character $_ in $out" 
+	for (split //, $out);
 	$id - $OFFSET;
 }
 
